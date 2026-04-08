@@ -1,0 +1,41 @@
+[package]
+name = "reporter"
+version = "0.1.2"
+edition = "2024"
+license-file = "../LICENSE"
+description = "DPI probe: checks blockage of domains by SNI"
+
+[[bin]]
+name = "cheburchecker"
+path = "src/main.rs"
+
+[package.metadata.deb]
+name = "cheburchecker"
+maintainer = "Lowder <me@lowderplay.dev>"
+maintainer-scripts = "debian/"
+systemd-units = [
+    { unit-name = "cheburchecker", enable = false, start = false },
+    { unit-name = "cheburchecker.100k" },
+    { unit-name = "cheburchecker.1kk" },
+]
+
+[dependencies]
+tokio = { workspace = true }
+reqwest = { workspace = true, default-features = false }
+log = { workspace = true }
+reports = { path = "../reports" }
+anyhow = "1.0"
+env_logger = "0.11.10"
+futures = "0.3"
+clap = { version = "4.6.0", features = ["derive", "env"] }
+csv = "1.4.0"
+indicatif = "0.18.4"
+rmp-serde = "1.3.1"
+serde = { version = "1.0.228", features = ["derive"] }
+
+[target.'cfg(unix)'.dependencies]
+libc = "0.2.184"
+
+[build-dependencies]
+reqwest = { workspace = true, default-features = false, features = ["blocking"] }
+getrandom = "0.4.2"

@@ -1,0 +1,34 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT *\n        FROM whitelist\n        WHERE $1 = domain\n           OR $1 LIKE CONCAT('%.', domain)\n        ORDER BY LENGTH(domain) DESC\n        LIMIT 1",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "domain",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 1,
+        "name": "rank",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 2,
+        "name": "last_ok",
+        "type_info": "Timestamp"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Text"
+      ]
+    },
+    "nullable": [
+      true,
+      true,
+      true
+    ]
+  },
+  "hash": "5aa59a3d560beee3b4c2137e3a0e45552aa6a684356773f268f1f0cc226e5b5e"
+}

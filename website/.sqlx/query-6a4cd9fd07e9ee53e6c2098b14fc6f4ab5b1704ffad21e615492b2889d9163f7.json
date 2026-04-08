@@ -1,0 +1,42 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "WITH bins AS (\n  SELECT generate_series(0, $1 - 1) AS bin\n)\nSELECT\n  b.bin as bin_id,\n  b.bin * $2 + 1    AS bin_min_rank,\n  (b.bin + 1) * $2 AS bin_max_rank,\n  COUNT(case when not $3 or w.domain not like '%.co.uk' then 1 end)     AS count\nFROM bins b\nLEFT JOIN whitelist w\n  ON FLOOR(w.rank / $2) = b.bin\nGROUP BY b.bin\nORDER BY b.bin;",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "bin_id",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 1,
+        "name": "bin_min_rank",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 2,
+        "name": "bin_max_rank",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 3,
+        "name": "count",
+        "type_info": "Int8"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int4",
+        "Int4",
+        "Bool"
+      ]
+    },
+    "nullable": [
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  "hash": "6a4cd9fd07e9ee53e6c2098b14fc6f4ab5b1704ffad21e615492b2889d9163f7"
+}
